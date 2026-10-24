@@ -1,0 +1,23 @@
+node_modules/
+coverage/
+logs/
+drizzle/
+*.log
+package-lock.json
+
+# Compiled output
+dist/
+build/
+.next/
+
+# Documentation and lockfiles
+yarn.lock
+*.md
+
+# Generated — a verbatim copy of payments-service/contracts/types.ts.
+# Reformatting it would break the byte-identity check in
+# lib/payments/contracts/drift.test.ts. Regenerate with `bun run contracts:sync`.
+lib/payments/contracts/serviceTypes.ts
+# Generated — the path list from payments-service/contracts/openapi.json.
+# `bun run contracts:sync` is the authority on its formatting, not prettier.
+lib/payments/contracts/servicePaths.ts
