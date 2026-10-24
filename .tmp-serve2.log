@@ -1,5 +1,0 @@
- INFO  Accepting connections at http://localhost:4002
- HTTP  10/24/2026 6:32:34 PM ::1 GET /
- HTTP  10/24/2026 6:32:34 PM ::1 Returned 200 in 125 ms
- HTTP  10/24/2026 6:32:34 PM ::1 GET /womans-day
- HTTP  10/24/2026 6:32:34 PM ::1 Returned 200 in 78 ms
