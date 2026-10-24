@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/* Base: the whole site is the celebration stage. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #ece4d2;
+}
+
+body {
+  color: #2f2620;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------------------
+   /womans-day celebration stage
+
+   Only the continuous, non-scroll-driven motion lives in CSS: sticker wobble, drifting
+   petals, the parcel's idle bob and the music equalizer. Everything scroll-scrubbed is a
+   framer-motion MotionValue so it never re-renders React. The keyframes are prefixed
+   `wd-` and only used inside the route.
+--------------------------------------------------------------------------- */
+
+[data-womans-day] {
+  background: #ece4d2;
+  color: #2f2620;
+  overscroll-behavior-y: none;
+  /* This route is a hand-illustrated light stage with its own palette; it opts
+     out of any app theme entirely. */
+  color-scheme: only light;
+}
+
+/* Text scale for the book pages. The spread copy is authored in `cqw` (percent of the
+   page container), which is beautifully proportional on a large display but shrinks the
+   book to an unreadable size on a laptop, where each page is only ~620px: `1.05cqw` is
+   ~6.5px. These utilities add a px floor so the SAME authored proportions stay legible at
+   laptop width while still scaling up. Use these instead of bare `text-[Ncqw]` for any
+   text the reader has to read (headings, body, labels); decorative stamps can stay raw. */
+.wd-t-2xs {
+  font-size: clamp(11px, 1.05cqw, 17px);
+}
+.wd-t-xs {
+  font-size: clamp(12px, 1.35cqw, 20px);
+}
+.wd-t-sm {
+  font-size: clamp(13px, 1.7cqw, 24px);
+}
+.wd-t-body {
+  font-size: clamp(14px, 2.05cqw, 28px);
+}
+.wd-t-lead {
+  font-size: clamp(16px, 2.6cqw, 34px);
+}
+.wd-t-h {
+  font-size: clamp(22px, 4.6cqw, 60px);
+}
+
+[data-womans-day] ::selection {
+  background: rgba(196, 86, 111, 0.28);
+}
+
+.wd-wobble {
+  transform: rotate(var(--wd-tilt, 0deg));
+  animation: wd-wobble 7.5s ease-in-out infinite;
+  animation-delay: var(--wd-delay, 0s);
+}
+
+/* A page slot that is not on screen pauses every continuous animation inside it. All six
+   spread slots stay MOUNTED so no page re-decodes at a turn, but a hidden slot's
+   `wd-wobble` / `wd-idle-bob` / drift would otherwise keep running on every frame
+   of every turn. `visibility: hidden` alone does not stop the work. */
+[data-womans-day] [data-visible="false"] * {
+  animation-play-state: paused !important;
+}
+
+@keyframes wd-wobble {
+  0%,
+  100% {
+    transform: rotate(var(--wd-tilt, 0deg));
+  }
+  45% {
+    transform: rotate(calc(var(--wd-tilt, 0deg) + 1.4deg)) translateY(-0.25%);
+  }
+  70% {
+    transform: rotate(calc(var(--wd-tilt, 0deg) - 0.7deg));
+  }
+}
+
+/* A planted flower's idle sway: pivots on its BASE (transform-origin is set inline) and
+   stays very gentle (±1.2°) so a full garden never looks windy. */
+.wd-garden-wobble {
+  animation: wd-garden-wobble 8s ease-in-out infinite;
+}
+
+@keyframes wd-garden-wobble {
+  0%,
+  100% {
+    transform: rotate(-1.2deg);
+  }
+  50% {
+    transform: rotate(1.2deg);
+  }
+}
+
+.wd-petal-drift {
+  animation: wd-petal-drift var(--wd-petal-duration, 11s) ease-in-out infinite alternate;
+  animation-delay: var(--wd-petal-delay, 0s);
+}
+
+@keyframes wd-petal-drift {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(var(--wd-petal-x, 18px), var(--wd-petal-y, 40px), 0)
+      rotate(var(--wd-petal-rotate, 24deg));
+  }
+}
+
+.wd-idle-bob {
+  animation: wd-idle-bob 3.2s ease-in-out infinite;
+}
+
+@keyframes wd-idle-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-0.6deg);
+  }
+}
+
+@keyframes wd-eq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-wobble,
+  .wd-petal-drift,
+  .wd-idle-bob {
+    animation: none;
+  }
+
+  .wd-wobble {
+    transform: rotate(var(--wd-tilt, 0deg));
+  }
+}
