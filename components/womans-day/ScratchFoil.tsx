@@ -84,21 +84,16 @@ function paintFoilArt(canvas: HTMLCanvasElement, foil: HTMLImageElement | null):
     ctx.fillRect(0, 0, width, height);
   }
 
-  // The "scratch me" call is the point of the page: set in the readable label face
-  // (not the hand font), large and dark enough to read on the grey foil, with a light
-  // emboss offset so it still feels printed into the foil.
-  const fontSize = Math.round(width * 0.19);
+  // The "scratch me" call is the point of the page: plain flat label-face text, no
+  // emboss tricks — large and dark so it reads like normal text on the grey foil.
+  const fontSize = Math.round(width * 0.24);
   ctx.font = `600 ${fontSize}px var(--font-type), sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   const cx = width / 2;
   const cy = height / 2;
-  ctx.fillStyle = "rgba(255,255,255,0.6)";
-  ctx.fillText("scratch me", cx, cy + height * 0.014);
-  ctx.fillStyle = "rgba(50,50,58,0.5)";
-  ctx.fillText("scratch me", cx, cy - height * 0.01);
-  ctx.fillStyle = "#3f3f47";
-  ctx.fillText("scratch me", cx, cy + height * 0.004);
+  ctx.fillStyle = "#33333b";
+  ctx.fillText("scratch me", cx, cy);
 
   // A soft inner shade at the edges (a scratch-off foil is slightly domed), not a hard
   // vector stroke which reads as app UI.

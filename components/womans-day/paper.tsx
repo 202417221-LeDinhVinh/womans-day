@@ -235,7 +235,7 @@ export function LabelQuote({
         draggable={false}
       />
       <p
-        className={`relative z-10 w-full px-[6%] py-[1.6%] text-center leading-snug text-[#4a3d2c] ${
+        className={`relative z-10 w-full px-[10%] py-[2.5%] text-center leading-snug text-[#4a3d2c] ${
           tone === "mono"
             ? "wd-t-2xs whitespace-nowrap font-[family-name:var(--font-type)] tracking-[0.08em]"
             : "wd-t-sm font-[family-name:var(--font-book)] tracking-[0.06em] italic"
