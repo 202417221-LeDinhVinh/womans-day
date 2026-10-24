@@ -328,7 +328,7 @@ function FloristBouquetPageImpl({
             </div>
           </div>
           {bouquet.items.length === 0 && bouquet.fillers.length === 0 && (
-            <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center font-[family-name:var(--font-note)] wd-t-sm text-[#34496b]/70">
+            <p className="pointer-events-none absolute left-1/2 top-1/2 z-[100] -translate-x-1/2 -translate-y-1/2 text-center font-[family-name:var(--font-note)] wd-t-sm text-[#34496b]/70">
               the paper is still empty
             </p>
           )}
@@ -397,6 +397,11 @@ function FloristMobilePageImpl({
               />
             </div>
           </div>
+          {bouquet.items.length === 0 && bouquet.fillers.length === 0 && (
+            <p className="pointer-events-none absolute left-1/2 top-1/2 z-[100] -translate-x-1/2 -translate-y-1/2 text-center font-[family-name:var(--font-note)] wd-t-sm text-[#34496b]/70">
+              the paper is still empty
+            </p>
+          )}
         </div>
 
         <Controls bouquet={bouquet} dispatch={dispatch} compact />
