@@ -33,7 +33,7 @@ import {
   hashTag,
   sanitizeName,
 } from "@/lib/womansDay/flowerHash";
-import { buildGiftUrl, type Gift } from "@/lib/womansDay/giftLink";
+import { type Gift } from "@/lib/womansDay/giftLink";
 import { useParcel } from "@/lib/womansDay/parcelMachine";
 import { criticalImages, deferredImages, floristImages } from "@/lib/womansDay/assets";
 import {
@@ -94,7 +94,6 @@ import {
   ScrapbookRightPage,
 } from "@/components/womans-day/spreads/ScrapbookSpread";
 import ShareImageDialog from "@/components/social/ShareImageDialog";
-import { ShareLinkDialog } from "@/components/social/ShareLinkDialog";
 
 /**
  * The one client root for /womans-day: scroll track, Lenis, scene state, sound, the
@@ -211,8 +210,6 @@ export function WomansDayExperience({ gift }: { gift: Gift }) {
   useWarmAssets(critical, deferred);
 
   const [shareOpen, setShareOpen] = useState(false);
-  const [giftOpen, setGiftOpen] = useState(false);
-  const [giftUrl, setGiftUrl] = useState("");
   const [parcelAutoOpen, setParcelAutoOpen] = useState(false);
   const [parcelOpened, setParcelOpened] = useState(false);
   // The parcel step lives here so a remount (leaf copy, settle snap, scene flip) cannot
@@ -649,15 +646,6 @@ export function WomansDayExperience({ gift }: { gift: Gift }) {
 
   const handleRemoved = useCallback(() => {}, []);
 
-  const handleSend = useCallback(
-    (recipient: string) => {
-      const url = buildGiftUrl(window.location.origin, recipient, bouquet);
-      setGiftUrl(url);
-      setGiftOpen(true);
-    },
-    [bouquet]
-  );
-
   /**
    * Open the keepsake share dialog only once its off-screen card is fully paintable.
    * `ShareImageDialog` captures a clone of `#womans-day-keepsake`; if the route fonts
@@ -936,7 +924,6 @@ export function WomansDayExperience({ gift }: { gift: Gift }) {
               visible={scene.letter}
               reduced={reduced}
               onSave={handleSaveKeepsake}
-              onSend={handleSend}
             />
           </motion.div>
 
@@ -1056,14 +1043,6 @@ export function WomansDayExperience({ gift }: { gift: Gift }) {
           onClose={() => setShareOpen(false)}
         />
       ) : null}
-
-      <ShareLinkDialog
-        open={giftOpen}
-        onOpenChange={setGiftOpen}
-        url={giftUrl}
-        title="A bouquet for you · Ronan SAT"
-        heading="Send a bouquet"
-      />
 
       <span className="sr-only" aria-live="polite">
         {parcelOpened ? "Parcel opened." : ""}

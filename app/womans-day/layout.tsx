@@ -46,8 +46,6 @@ const DESCRIPTION =
   "A small Women's Day celebration from Ronan SAT: a bloom that follows your scroll, a flower chosen from your name, a parcel, and a bouquet you can send.";
 
 export const metadata: Metadata = {
-  // Absolute base so the OG/Twitter card images resolve on the live subdomain.
-  metadataBase: new URL("https://womans-day.ronansat.com"),
   title: TITLE,
   description: DESCRIPTION,
   openGraph: {

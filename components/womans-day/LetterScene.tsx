@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { memo, useState } from "react";
+import { memo } from "react";
 
-import { MAX_NAME_LENGTH } from "@/lib/womansDay/flowerHash";
 import { WOMANS_DAY_LABEL, WOMANS_DAY_SHORT, type Flower } from "@/lib/womansDay/flowers";
 import { MusicWidget } from "@/components/womans-day/MusicWidget";
 import { Art, Sticker } from "@/components/womans-day/paper";
@@ -28,25 +27,13 @@ function LetterSceneImpl({
   visible,
   reduced,
   onSave,
-  onSend,
 }: {
   name: string;
   flower: Flower;
   visible: boolean;
   reduced: boolean;
   onSave: () => void;
-  onSend: (recipient: string) => void;
 }) {
-  const [recipient, setRecipient] = useState("");
-  const hasRecipient = recipient.trim().length > 0;
-
-  // Copying the bouquet is the priority: it works with or WITHOUT a name. A name just
-  // personalises the link (`?to=`); no name gives a plain bouquet link. "Save my card"
-  // (image capture) is hidden for now (see the dead branch below).
-  function handleSend() {
-    onSend(recipient.trim());
-  }
-
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[#f0dfd8]">
       <Art
@@ -120,59 +107,10 @@ function LetterSceneImpl({
           </div>
         </motion.div>
 
-        {/* Actions: a separate opaque card stacked ABOVE any art, so nothing can cover
-            the recipient field or the buttons. */}
-        <div className="relative z-20 mt-5 grid w-full grid-cols-1 items-stretch gap-4 min-[820px]:grid-cols-[1.15fr_1fr]">
+        {/* Actions: the music card, stacked ABOVE any art so the envelope can never
+            cover it. */}
+        <div className="relative z-20 mt-5 w-full">
           <MusicWidget visible={visible} />
-
-          <div className="flex flex-col justify-between gap-3 rounded-[14px] border border-[#8a6a4c]/25 bg-[#f7efe0] p-4 shadow-[0_10px_24px_rgba(80,45,40,0.14)]">
-            <div>
-              <p className="font-[family-name:var(--font-book)] text-[clamp(13px,1.5vw,16px)] italic text-[#5b4636]">
-                Send this bouquet to someone
-              </p>
-              <div className="mt-2 border-b border-[#8a6a4c]/35 pb-1">
-                <input
-                  value={recipient}
-                  onChange={(event) => setRecipient(event.target.value)}
-                  maxLength={MAX_NAME_LENGTH}
-                  placeholder="Her name"
-                  aria-label="Recipient's name"
-                  spellCheck={false}
-                  className="w-full bg-transparent font-[family-name:var(--font-book)] text-[clamp(14px,1.6vw,17px)] text-[#3a2d23] caret-[#b0566b] outline-none placeholder:text-[#b3a28d]"
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              {/* "Save my card" (image capture) is hidden for now: the priority is copying
-                  the bouquet (the gift link below). The keepsake capture is kept in the
-                  code so it can be re-enabled later. */}
-              {false ? (
-                <button
-                  type="button"
-                  onClick={onSave}
-                  className="min-h-9 cursor-pointer border border-[#8a6a4c]/50 bg-[#fbf4e4] px-3.5 py-1.5 font-[family-name:var(--font-type)] text-[clamp(10px,1.1vw,12px)] tracking-[0.04em] text-[#3f3127]"
-                >
-                  Save my card
-                </button>
-              ) : null}
-              <button
-                type="button"
-                onClick={handleSend}
-                className="min-h-9 cursor-pointer bg-[#7a3b3f] px-3.5 py-1.5 font-[family-name:var(--font-type)] text-[clamp(10px,1.1vw,12px)] tracking-[0.04em] text-[#fbf4e4] transition-colors hover:bg-[#672f33] focus-visible:ring-2 focus-visible:ring-[#b0566b]"
-              >
-                Copy this bouquet
-              </button>
-            </div>
-            <p
-              className="font-[family-name:var(--font-type)] text-[clamp(9px,0.95vw,11px)] tracking-[0.06em] text-[#8a745c]"
-              aria-live="polite"
-            >
-              {hasRecipient
-                ? "A gift link opens — copy it to send her this exact bouquet."
-                : "Optional: add her name above, or just copy the bouquet link as it is."}
-            </p>
-          </div>
         </div>
 
         <p className="mt-4 shrink-0 text-center font-[family-name:var(--font-type)] text-[clamp(8px,0.95vw,10px)] tracking-[0.12em] text-[#8a745c]/80">
